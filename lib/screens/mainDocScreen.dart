@@ -1,0 +1,107 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+import 'package:mydocsy/api/appApi.dart';
+import 'package:mydocsy/clients/myScoket.dart';
+import 'package:mydocsy/models/docsModel.dart';
+
+class MainDocumnetScreen extends StatefulWidget {
+  final DocumentModel documentModel;
+  const MainDocumnetScreen({super.key, required this.documentModel});
+
+  @override
+  State<MainDocumnetScreen> createState() => _MainDocumnetScreenState();
+}
+
+class _MainDocumnetScreenState extends State<MainDocumnetScreen> {
+  @override
+  void initState() {
+    super.initState();
+    MySocket.socket.on("changed", (data) {
+      setState(() {});
+      // _quillController!.compose(Delta.fromJson(data["delta"]),
+      //     TextSelection.collapsed(offset: 0), ChangeSource.remote);
+    });
+    // _quillController.addListener(() {
+    //   {}
+    // });
+  }
+
+  QuillController? _quillController;
+  TextEditingController _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: Scaffold(
+      body: FutureBuilder(
+        future: AppApi().getDocById(id: widget.documentModel.docId),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            var myJSON = jsonDecode(r'{"insert":"hello\n"}');
+
+            _controller.text = snapshot.data["title"];
+            _quillController = QuillController(
+                document: snapshot.data["content"].isEmpty
+                    ? Document()
+                    : Document.fromJson(myJSON),
+                selection: TextSelection.collapsed(offset: 0));
+
+            _quillController!.document.changes.listen((event) async {
+              // await AppApi().patchDocContent(
+              //     id: snapshot.data["_id"], content: ["event"]);
+              // if (event.source == ChangeSource.local) {
+              //   Map<String, dynamic> map = {"delta": event};
+              //   MySocket().makingChanges(map);
+              // }
+            });
+            return Scaffold(
+              appBar: AppBar(
+                title: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: TextFormField(
+                    controller: _controller,
+                    onChanged: (value) async {
+                      await AppApi().patchDocTitle(
+                        id: widget.documentModel.docId,
+                        title: value,
+                      );
+                      MySocket().makingChanges("changing doc name: ");
+                    },
+                  ),
+                ),
+              ),
+              body: QuillProvider(
+                configurations: QuillConfigurations(
+                  controller: _quillController!,
+                  sharedConfigurations: const QuillSharedConfigurations(
+                    locale: Locale('en'),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    const QuillToolbar(),
+                    Expanded(
+                      child: Card(
+                        child: QuillEditor.basic(
+                          configurations: const QuillEditorConfigurations(
+                            padding: EdgeInsets.all(20),
+                            readOnly: false,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
+    ));
+  }
+}
