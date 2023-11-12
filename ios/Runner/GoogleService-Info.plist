@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   GoogleService-Info.plist
+   Runner
+
+   Created by Harshdeep Singh Saluja on 12/11/23.
+   Copyright (c) 2023 . All rights reserved.
+-->
 <plist version="1.0">
-<dict>
-	<key>CLIENT_ID</key>
-	<string>634345579926-l7o604bpcsjiiilegs6950sqfe5098qq.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.634345579926-l7o604bpcsjiiilegs6950sqfe5098qq</string>
-	<key>PLIST_VERSION</key>
-	<string>1</string>
-	<key>BUNDLE_ID</key>
-	<string>com.example.mydocsy</string>
-</dict>
+<dict/>
 </plist>
