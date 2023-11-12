@@ -8,7 +8,7 @@ import 'package:mydocsy/clients/myScoket.dart';
 import 'package:mydocsy/models/userModel.dart';
 
 class AppApi {
-  static String kBaseUrl = "http://192.168.1.6:3001";
+  static String kBaseUrl = "http://192.168.1.12:3001";
   static Map<String, String> userHeader = {
     "Content-type": "application/json",
     "Accept": "application/json"
@@ -75,6 +75,7 @@ class AppApi {
     String? token = await SharedPrefData().getToken();
     try {
       Uri url = Uri.parse("$kBaseUrl/api/doc/$id");
+      Logger().f(url);
       http.Response response = await http.get(url, headers: {
         "Content-type": "application/json",
         "Accept": "application/json",
@@ -83,6 +84,28 @@ class AppApi {
       Logger().f(response.body);
       if (response.statusCode == 200) {
         Logger().e(response.body);
+
+        var data = jsonDecode(response.body)["data"];
+        return data;
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
+    return null;
+  }
+
+  Future deleteDocById({required String id}) async {
+    String? token = await SharedPrefData().getToken();
+    try {
+      Uri url = Uri.parse("$kBaseUrl/api/doc/$id");
+      http.Response response = await http.delete(url, headers: {
+        "Content-type": "application/json",
+        "Accept": "application/json",
+        "token": token!
+      });
+      Logger().f(response.body);
+      if (response.statusCode == 200) {
+        Logger().f(response.body);
 
         var data = jsonDecode(response.body)["data"];
         return data;
@@ -139,7 +162,7 @@ class AppApi {
 
   Future patchDocContent({
     required String id,
-    required List content,
+    required content,
   }) async {
     String? token = await SharedPrefData().getToken();
 

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:logger/logger.dart';
 import 'package:mydocsy/api/appApi.dart';
 import 'package:mydocsy/clients/myScoket.dart';
 import 'package:mydocsy/models/docsModel.dart';
@@ -18,7 +19,8 @@ class _MainDocumnetScreenState extends State<MainDocumnetScreen> {
   @override
   void initState() {
     super.initState();
-    MySocket.socket.on("changed", (data) {
+    MySocket.socket.on("changes", (data) {
+      Logger().f("------------->received data : $data");
       setState(() {});
       // _quillController!.compose(Delta.fromJson(data["delta"]),
       //     TextSelection.collapsed(offset: 0), ChangeSource.remote);
@@ -39,18 +41,21 @@ class _MainDocumnetScreenState extends State<MainDocumnetScreen> {
         future: AppApi().getDocById(id: widget.documentModel.docId),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
-            var myJSON = jsonDecode(r'{"insert":"hello\n"}');
-
             _controller.text = snapshot.data["title"];
             _quillController = QuillController(
                 document: snapshot.data["content"].isEmpty
                     ? Document()
-                    : Document.fromJson(myJSON),
+                    : Document.fromDelta(
+                        Delta.fromJson(snapshot.data["content"])),
                 selection: TextSelection.collapsed(offset: 0));
 
             _quillController!.document.changes.listen((event) async {
-              // await AppApi().patchDocContent(
-              //     id: snapshot.data["_id"], content: ["event"]);
+              var json = _quillController!.document.toDelta();
+
+              await AppApi()
+                  .patchDocContent(id: snapshot.data["_id"], content: json);
+              MySocket().makingChanges("editing doc");
+
               // if (event.source == ChangeSource.local) {
               //   Map<String, dynamic> map = {"delta": event};
               //   MySocket().makingChanges(map);
@@ -62,12 +67,12 @@ class _MainDocumnetScreenState extends State<MainDocumnetScreen> {
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: TextFormField(
                     controller: _controller,
-                    onChanged: (value) async {
+                    onFieldSubmitted: (value) async {
                       await AppApi().patchDocTitle(
                         id: widget.documentModel.docId,
                         title: value,
                       );
-                      MySocket().makingChanges("changing doc name: ");
+                      MySocket().makingChanges("changing doc name: $value");
                     },
                   ),
                 ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
 import 'package:mydocsy/api/appApi.dart';
 import 'package:mydocsy/auth/saveAuthToken.dart';
 import 'package:mydocsy/clients/myScoket.dart';
+import 'package:mydocsy/constants/appConsts.dart';
 import 'package:mydocsy/models/docsModel.dart';
-
 import 'package:mydocsy/screens/loginScreen.dart';
 import 'package:mydocsy/screens/mainDocScreen.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -25,9 +26,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    MySocket.socket.on("changes", (data) => setState(() {}));
+    MySocket.socket.on("changes", (data) {
+      Logger().f("------------->received data : $data");
+      setState(() {});
+    });
   }
 
+  bool showDelIcon = false;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,7 +44,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Spacer(),
                 IconButton(
                     onPressed: () async {
-                      AppApi().createNewDoc().then((value) {
+                      await AppApi().createNewDoc().then((value) {
                         DocumentModel documentModel =
                             DocumentModel.fromMap(value);
                         setState(() {});
@@ -48,7 +53,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             MaterialPageRoute(
                                 builder: (context) => MainDocumnetScreen(
                                       documentModel: documentModel,
-                                    )));
+                                    ))).then((value) => setState(() {
+                              int val = 0;
+                              val++;
+                              val;
+                            }));
                       });
                     },
                     icon: Icon(Icons.add)),
@@ -85,6 +94,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           final data = snapshot.data[index];
                           return InkWell(
+                            onLongPress: () {
+                              setState(() {
+                                showDelIcon = true;
+                              });
+                            },
                             onTap: () {
                               DocumentModel documentModel =
                                   DocumentModel.fromMap(snapshot.data[index]);
@@ -97,7 +111,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             },
                             child: ListTile(
                               title: Text(data["title"]),
-                              subtitle: Text(data["createdAt"].toString()),
+                              subtitle: Text(AppConstants.DateFormatter(
+                                  data["createdAt"])),
+                              trailing: Visibility(
+                                // visible: showDelIcon,
+                                child: IconButton(
+                                    onPressed: () async {
+                                      await AppApi()
+                                          .deleteDocById(id: data["_id"])
+                                          .then((value) => setState(() {}));
+                                      MySocket().makingChanges(
+                                          "deleting ${data["title"]}");
+                                    },
+                                    icon: Icon(Icons.delete)),
+                              ),
                             ),
                           );
                         },
