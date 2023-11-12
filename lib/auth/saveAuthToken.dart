@@ -13,7 +13,7 @@ class SharedPrefData {
 
   Future clearToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove("uid");
+    prefs.remove("token");
   }
 
   void saveUid(String token) async {

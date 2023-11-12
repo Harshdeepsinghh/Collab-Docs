@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:mydocsy/auth/saveAuthToken.dart';
 import 'package:mydocsy/screens/homeScreen.dart';
-import 'package:mydocsy/screens/loginScreen.dart';
+import 'package:mydocsy/screens/loginScreen/selectLoginScreen.dart';
 
 void main() {
   runApp(ProviderScope(child: const MyApp()));
@@ -19,13 +19,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool isLoggedIn = true;
-  String? uid;
+  String uid = '';
   Future checkToken() async {
     String? token = await SharedPrefData().getToken();
-    uid = await SharedPrefData().getUid();
+    uid = await SharedPrefData().getUid() ?? '';
     setState(() {});
     Logger().e(token);
-    if (token == null && uid == null) {
+    if (token == null) {
       setState(() {
         isLoggedIn = false;
       });
@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: isLoggedIn ? HomeScreen(uid!) : LoginScreen(),
+      home: isLoggedIn ? HomeScreen(uid) : SelectLoginScreen(),
     );
   }
 }

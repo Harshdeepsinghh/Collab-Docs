@@ -8,7 +8,9 @@ import 'package:mydocsy/clients/myScoket.dart';
 import 'package:mydocsy/models/userModel.dart';
 
 class AppApi {
-  static String kBaseUrl = "http://192.168.1.12:3001";
+  // static String kBaseUrl = "http://192.168.1.12:3001";
+
+  static String kBaseUrl = "https://mydocsy-server.onrender.com";
   static Map<String, String> userHeader = {
     "Content-type": "application/json",
     "Accept": "application/json"
@@ -47,6 +49,23 @@ class AppApi {
       Logger().e(e);
     }
     return null;
+  }
+
+  Future userLoginManually(Object body) async {
+    Uri url = Uri.parse("$kBaseUrl/api/loginmanually");
+    try {
+      http.Response response =
+          await http.post(url, body: jsonEncode(body), headers: userHeader);
+      Logger().f(response.statusCode);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        Logger().f(data);
+        return data;
+      }
+    } catch (e) {
+      Logger().f(e);
+    }
   }
 
   Future getAllDocs() async {

@@ -7,7 +7,7 @@ import 'package:mydocsy/auth/saveAuthToken.dart';
 import 'package:mydocsy/clients/myScoket.dart';
 import 'package:mydocsy/constants/appConsts.dart';
 import 'package:mydocsy/models/docsModel.dart';
-import 'package:mydocsy/screens/loginScreen.dart';
+import 'package:mydocsy/screens/loginScreen/selectLoginScreen.dart';
 import 'package:mydocsy/screens/mainDocScreen.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -38,6 +38,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
+            // title: Text("Your documents"),
             automaticallyImplyLeading: false,
             flexibleSpace: Row(
               children: [
@@ -69,7 +70,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                              builder: (context) => SelectLoginScreen()));
                     },
                     icon: Icon(
                       Icons.logout,
@@ -109,21 +110,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                             documentModel: documentModel,
                                           )));
                             },
-                            child: ListTile(
-                              title: Text(data["title"]),
-                              subtitle: Text(AppConstants.DateFormatter(
-                                  data["createdAt"])),
-                              trailing: Visibility(
-                                // visible: showDelIcon,
-                                child: IconButton(
-                                    onPressed: () async {
-                                      await AppApi()
-                                          .deleteDocById(id: data["_id"])
-                                          .then((value) => setState(() {}));
-                                      MySocket().makingChanges(
-                                          "deleting ${data["title"]}");
-                                    },
-                                    icon: Icon(Icons.delete)),
+                            child: Card(
+                              color: Colors.purple.shade100,
+                              child: ListTile(
+                                title: Text(data["title"]),
+                                subtitle: Text(AppConstants.DateFormatter(
+                                    data["createdAt"])),
+                                trailing: Visibility(
+                                  // visible: showDelIcon,
+                                  child: IconButton(
+                                      onPressed: () async {
+                                        await AppApi()
+                                            .deleteDocById(id: data["_id"])
+                                            .then((value) => setState(() {}));
+                                        MySocket().makingChanges(
+                                            "deleting ${data["title"]}");
+                                      },
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: Colors.black,
+                                      )),
+                                ),
                               ),
                             ),
                           );
