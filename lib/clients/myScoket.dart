@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:logger/logger.dart';
-import 'package:mydocsy/api/appApi.dart';
+import 'package:collabDocs/api/appApi.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class MySocket {
   static String server = AppApi.kBaseUrl;
+  // StreamController get changesController => _changesController;
+  final changesController = StreamController<dynamic>.broadcast();
 
   static IO.Socket socket = IO.io(server, <String, dynamic>{
     'transports': ['websocket'],
@@ -15,10 +19,10 @@ class MySocket {
     Logger().d(data);
   }
 
-  listeningChanges(dynamic setState) {
+  listeningChanges() {
     socket.on("changes", (data) {
       Logger().f("------------->received data : $data");
-      setState(data);
+      changesController.add(data);
     });
   }
 }

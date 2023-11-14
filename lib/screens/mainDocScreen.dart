@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:logger/logger.dart';
-import 'package:mydocsy/api/appApi.dart';
-import 'package:mydocsy/clients/myScoket.dart';
-import 'package:mydocsy/models/docsModel.dart';
+import 'package:collabDocs/api/appApi.dart';
+import 'package:collabDocs/clients/myScoket.dart';
+import 'package:collabDocs/models/docsModel.dart';
 
 class MainDocumnetScreen extends StatefulWidget {
   final DocumentModel documentModel;
@@ -20,12 +20,7 @@ class _MainDocumnetScreenState extends State<MainDocumnetScreen> {
     MySocket.socket.on("changes", (data) {
       Logger().f("------------->received data : $data");
       setState(() {});
-      // _quillController!.compose(Delta.fromJson(data["delta"]),
-      //     TextSelection.collapsed(offset: 0), ChangeSource.remote);
     });
-    // _quillController.addListener(() {
-    //   {}
-    // });
   }
 
   QuillController? _quillController;

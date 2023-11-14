@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mydocsy/api/appApi.dart';
-import 'package:mydocsy/auth/saveAuthToken.dart';
-import 'package:mydocsy/screens/homeScreen.dart';
+import 'package:collabDocs/api/appApi.dart';
+import 'package:collabDocs/auth/saveAuthToken.dart';
+import 'package:collabDocs/screens/homeScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,11 +15,32 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _passwordController = TextEditingController();
 
   GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+  bool isEmail(String em) {
+    String p =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regExp = new RegExp(p);
+    return regExp.hasMatch(em);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _globalKey,
       child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: Icon(
+              Icons.navigate_before,
+              size: 38,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -33,6 +54,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   validator: (String) {
                     if (String == '') {
                       return "Please write an email address";
+                    } else if (!isEmail(String!)) {
+                      return "Invalid email";
                     }
                     return null;
                   },

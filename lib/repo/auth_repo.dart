@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
-import 'package:mydocsy/api/appApi.dart';
-import 'package:mydocsy/auth/saveAuthToken.dart';
-import 'package:mydocsy/models/userModel.dart';
-import 'package:mydocsy/screens/homeScreen.dart';
+import 'package:collabDocs/api/appApi.dart';
+import 'package:collabDocs/auth/saveAuthToken.dart';
+import 'package:collabDocs/models/userModel.dart';
+import 'package:collabDocs/screens/homeScreen.dart';
 
 final authRepoProvider =
     Provider((ref) => AuthRepo(googleSignIn: GoogleSignIn()));

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
-import 'package:mydocsy/auth/saveAuthToken.dart';
-import 'package:mydocsy/screens/homeScreen.dart';
-import 'package:mydocsy/screens/loginScreen/selectLoginScreen.dart';
+import 'package:collabDocs/auth/saveAuthToken.dart';
+import 'package:collabDocs/screens/homeScreen.dart';
+import 'package:collabDocs/screens/loginScreen/selectLoginScreen.dart';
 
 void main() {
   runApp(ProviderScope(child: const MyApp()));

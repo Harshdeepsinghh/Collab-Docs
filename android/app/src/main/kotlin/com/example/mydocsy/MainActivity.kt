@@ -1,4 +1,4 @@
-package com.example.mydocsy
+package com.harshdeep.collabDocs
 
 import io.flutter.embedding.android.FlutterActivity
 

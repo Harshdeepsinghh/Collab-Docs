@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:mydocsy/api/appApi.dart';
-import 'package:mydocsy/models/userModel.dart';
-import 'package:mydocsy/screens/loginScreen/loginScreen.dart';
+import 'package:collabDocs/api/appApi.dart';
+import 'package:collabDocs/screens/loginScreen/loginScreen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -18,6 +17,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _passwordController = TextEditingController();
 
   GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+  bool isEmail(String em) {
+    String p =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regExp = new RegExp(p);
+    return regExp.hasMatch(em);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -45,6 +51,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   validator: (String) {
                     if (String == '') {
                       return "Please write an email address";
+                    } else if (!isEmail(String!)) {
+                      return "Invalid email";
                     }
                     return null;
                   },
@@ -69,11 +77,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             "email": _emailController.text,
                             "password": _passwordController.text
                           });
-                          await AppApi().userSignIn(body);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()));
+                          await AppApi().userSignIn(body).then((value) {
+                            if (value["msg"] == "user already exist!") {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text("user already exist")));
+                            } else {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginScreen()));
+                            }
+                          });
                         }
                       },
                       child: Text(
@@ -98,6 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.7,
           child: TextFormField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: validator,
             controller: controller,
             decoration: InputDecoration(

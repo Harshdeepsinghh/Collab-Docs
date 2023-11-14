@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
-import 'package:mydocsy/auth/saveAuthToken.dart';
-import 'package:mydocsy/clients/myScoket.dart';
-import 'package:mydocsy/models/userModel.dart';
+import 'package:collabDocs/auth/saveAuthToken.dart';
+import 'package:collabDocs/clients/myScoket.dart';
+import 'package:collabDocs/models/userModel.dart';
 
 class AppApi {
-  // static String kBaseUrl = "http://192.168.1.12:3001";
+  // static String kBaseUrl = "http://192.168.1.12:8777";
 
-  static String kBaseUrl = "https://mydocsy-server.onrender.com";
+  static String kBaseUrl = "http://27.57.137.131:8777";
   static Map<String, String> userHeader = {
     "Content-type": "application/json",
     "Accept": "application/json"
