@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:collabDocs/constants/appConsts.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
@@ -38,7 +40,7 @@ class AppApi {
         "token": token!
       });
       if (response.statusCode == 200) {
-        Logger().d(response.body);
+        Logger().f(response.body);
         final userData = jsonDecode(response.body)["user"];
         return UserModel.fromJson(jsonEncode(userData)).copyWith(token: token);
       } else {
@@ -51,17 +53,19 @@ class AppApi {
     return null;
   }
 
-  Future userLoginManually(Object body) async {
+  Future userLoginManually(Object body, context) async {
     Uri url = Uri.parse("$kBaseUrl/api/loginmanually");
     try {
       http.Response response =
           await http.post(url, body: jsonEncode(body), headers: userHeader);
-      Logger().f(response.statusCode);
+      Logger().f(response.body);
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        Logger().f(data);
         return data;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            AppConstants.kSnackbarMsg(msg: jsonDecode(response.body)["msg"]));
       }
     } catch (e) {
       Logger().f(e);

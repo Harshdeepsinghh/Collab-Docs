@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:collabDocs/auth/saveAuthToken.dart';
 import 'package:collabDocs/screens/homeScreen.dart';
-import 'package:collabDocs/screens/loginScreen/selectLoginScreen.dart';
+import 'package:collabDocs/screens/loginScreen/loginScreen.dart';
 
 void main() {
   runApp(ProviderScope(child: const MyApp()));
@@ -44,11 +43,11 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        textTheme: GoogleFonts.poppinsTextTheme(),
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        fontFamily: "Lufga",
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xff01D8D8)),
         useMaterial3: true,
       ),
-      home: isLoggedIn ? HomeScreen(uid) : SelectLoginScreen(),
+      home: isLoggedIn ? HomeScreen(uid) : LoginScreen(),
     );
   }
 }
