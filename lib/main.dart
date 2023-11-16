@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:collabDocs/auth/saveAuthToken.dart';
-import 'package:collabDocs/screens/homeScreen.dart';
+import 'package:collabDocs/screens/homeScreen/homeScreen.dart';
 import 'package:collabDocs/screens/loginScreen/loginScreen.dart';
 
 void main() {

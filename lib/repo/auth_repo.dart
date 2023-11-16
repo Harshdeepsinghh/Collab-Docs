@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 import 'package:collabDocs/api/appApi.dart';
 import 'package:collabDocs/auth/saveAuthToken.dart';
 import 'package:collabDocs/models/userModel.dart';
-import 'package:collabDocs/screens/homeScreen.dart';
+import 'package:collabDocs/screens/homeScreen/homeScreen.dart';
 
 final authRepoProvider =
     Provider((ref) => AuthRepo(googleSignIn: GoogleSignIn()));

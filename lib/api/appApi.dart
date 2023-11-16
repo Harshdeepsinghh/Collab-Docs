@@ -10,9 +10,9 @@ import 'package:collabDocs/clients/myScoket.dart';
 import 'package:collabDocs/models/userModel.dart';
 
 class AppApi {
-  // static String kBaseUrl = "http://192.168.1.12:8777";
+  static String kBaseUrl = "http://192.168.1.7:8777";
 
-  static String kBaseUrl = "http://27.57.137.131:8777";
+  // static String kBaseUrl = "http://27.57.137.131:8777";
   static Map<String, String> userHeader = {
     "Content-type": "application/json",
     "Accept": "application/json"
