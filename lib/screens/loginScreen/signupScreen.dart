@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:collabDocs/constants/appColors.dart';
 import 'package:collabDocs/constants/appConsts.dart';
+import 'package:collabDocs/providers/myProvider.dart';
 import 'package:collabDocs/screens/loginScreen/loginScreen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:collabDocs/api/appApi.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -25,7 +28,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Form(
         key: globalKey,
         child: Scaffold(
-          backgroundColor: kPrimaryWhiteColor(),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
@@ -50,7 +52,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return "Please input a name";
                   }
                   return null;
-                }),
+                }, isPassword: false),
                 kRepeatedTextFieldAndHead(
                   context,
                   label: "Email",
@@ -61,6 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     }
                     return null;
                   },
+                  isPassword: false,
                 ),
                 kRepeatedTextFieldAndHead(context,
                     label: "Password",
@@ -71,7 +74,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return "Please input at least 6 digit password";
                   }
                   return null;
-                }),
+                }, isPassword: true),
                 kRepeatedLoginButton(),
                 Text("or"),
                 SizedBox(height: 20),
@@ -102,36 +105,57 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ));
   }
 
-  Column kRepeatedTextFieldAndHead(
+  bool showPassword = false;
+
+  Consumer kRepeatedTextFieldAndHead(
     BuildContext context, {
     required String label,
     required TextEditingController controller,
     required String? Function(String?)? validator,
+    required bool isPassword,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(color: kGreyColor()),
-        ),
-        SizedBox(height: 10),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.75,
-          child: TextFormField(
-            controller: controller,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: validator,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10),
-              isDense: true,
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(color: kGreyColor(), width: 0.5)),
+    return Consumer(
+      builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                  color:
+                      ref.read(themeProvider) ? kWhiteColor() : kGreyColor()),
             ),
-          ),
-        ),
-        SizedBox(height: 20),
-      ],
+            SizedBox(height: 10),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.75,
+              child: TextFormField(
+                obscureText: isPassword && !showPassword,
+                controller: controller,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: validator,
+                decoration: InputDecoration(
+                  suffixIcon: !isPassword
+                      ? null
+                      : IconButton(
+                          onPressed: () {
+                            setState(() {
+                              showPassword = !showPassword;
+                            });
+                          },
+                          icon: Icon(showPassword
+                              ? CupertinoIcons.eye
+                              : CupertinoIcons.eye_slash)),
+                  contentPadding: EdgeInsets.all(10),
+                  isDense: true,
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: kGreyColor(), width: 0.5)),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+          ],
+        );
+      },
     );
   }
 

@@ -10,9 +10,9 @@ import 'package:collabDocs/clients/myScoket.dart';
 import 'package:collabDocs/models/userModel.dart';
 
 class AppApi {
-  static String kBaseUrl = "http://192.168.1.7:8777";
+  // static String kBaseUrl = "http://192.168.1.12:8771";
 
-  // static String kBaseUrl = "http://27.57.137.131:8777";
+  static String kBaseUrl = "http://27.57.137.131:8777";
   static Map<String, String> userHeader = {
     "Content-type": "application/json",
     "Accept": "application/json"
@@ -30,7 +30,7 @@ class AppApi {
     print("something went wrong ${response.statusCode} ${response.body}");
   }
 
-  Future<UserModel?> getUser(ref) async {
+  Future getUser(ref) async {
     String? token = await SharedPrefData().getToken();
     Uri url = Uri.parse("$kBaseUrl/api/user");
     try {
@@ -62,6 +62,37 @@ class AppApi {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        return data;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            AppConstants.kSnackbarMsg(msg: jsonDecode(response.body)["msg"]));
+      }
+    } catch (e) {
+      Logger().f(e);
+    }
+  }
+
+  Future changePassword(context,
+      {required String oldPassword, required String newPassword}) async {
+    String? token = await SharedPrefData().getToken();
+
+    Uri url = Uri.parse("$kBaseUrl/api/passUpdate");
+    try {
+      http.Response response = await http.patch(url,
+          body: jsonEncode(
+              {"oldPassword": oldPassword, "newPassword": newPassword}),
+          headers: {
+            "Content-type": "application/json",
+            "Accept": "application/json",
+            "token": token!
+          });
+      Logger().f(response.body);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+            AppConstants.kSnackbarMsg(msg: jsonDecode(response.body)["msg"]));
         return data;
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

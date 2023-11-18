@@ -101,7 +101,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           menuScreen: SettingPannel(),
           mainScreen: HomeBody(),
           borderRadius: 24.0,
-          showShadow: true,
+          showShadow: false,
           angle: -1.0,
           slideWidth: MediaQuery.of(context).size.width * .85,
           openCurve: Curves.fastOutSlowIn,

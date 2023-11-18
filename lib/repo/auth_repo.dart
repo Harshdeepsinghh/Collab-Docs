@@ -29,7 +29,8 @@ class AuthRepo {
             email: user.email,
             profilePic: user.photoUrl ?? '',
             uid: '',
-            token: '');
+            token: '',
+            password: '');
 
         AppApi().userSignIn(userData.toJson()).then((value) {
           final newUser = userData.copyWith(

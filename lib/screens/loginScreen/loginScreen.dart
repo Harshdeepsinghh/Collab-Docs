@@ -2,7 +2,9 @@ import 'package:collabDocs/api/appApi.dart';
 import 'package:collabDocs/auth/saveAuthToken.dart';
 import 'package:collabDocs/constants/appColors.dart';
 import 'package:collabDocs/constants/appConsts.dart';
+import 'package:collabDocs/providers/myProvider.dart';
 import 'package:collabDocs/screens/homeScreen/homeScreen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,7 +33,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         child: Form(
           key: formKey,
           child: Scaffold(
-            backgroundColor: kPrimaryWhiteColor(),
             body: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: Column(
@@ -59,6 +60,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       }
                       return null;
                     },
+                    isPassword: false,
                   ),
                   kRepeatedTextFieldAndHead(context,
                       label: "Password",
@@ -69,7 +71,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       return "Please input at least 6 digit password";
                     }
                     return null;
-                  }),
+                  }, isPassword: true),
                   kRepeatedLoginButton(),
                   Text("or"),
                   Row(
@@ -84,8 +86,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           },
                           child: Text(
                             "Sign in with google account",
-                            style:
-                                TextStyle(fontSize: 16, color: kBlackColor()),
+                            style: TextStyle(fontSize: 16),
                           )),
                     ],
                   ),
@@ -151,27 +152,42 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
+  bool showPassword = false;
   Column kRepeatedTextFieldAndHead(
     BuildContext context, {
     required String label,
     required TextEditingController controller,
     required String? Function(String?)? validator,
+    required bool isPassword,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: TextStyle(color: kGreyColor()),
+          style: TextStyle(
+              color: ref.read(themeProvider) ? kWhiteColor() : kGreyColor()),
         ),
         SizedBox(height: 10),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.75,
           child: TextFormField(
+            obscureText: isPassword && !showPassword,
             controller: controller,
             validator: validator,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: InputDecoration(
+              suffixIcon: !isPassword
+                  ? null
+                  : IconButton(
+                      onPressed: () {
+                        setState(() {
+                          showPassword = !showPassword;
+                        });
+                      },
+                      icon: Icon(showPassword
+                          ? CupertinoIcons.eye
+                          : CupertinoIcons.eye_slash)),
               contentPadding: EdgeInsets.all(10),
               isDense: true,
               border: OutlineInputBorder(
@@ -184,57 +200,3 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 }
-
-   //  Scaffold(
-        //   body: Center(
-        //     child: Column(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         ElevatedButton.icon(
-        //             style: ElevatedButton.styleFrom(maximumSize: Size(250, 80)),
-        //             onPressed: () async {
-        //               await ref
-        //                   .watch(authRepoProvider)
-        //                   .signInWithGoogle(ref, context);
-        //             },
-        //             icon: Image.asset(
-        //               "assets/images/googleIcon.jpeg",
-        //               height: 30,
-        //             ),
-        //             label: Text(
-        //               'Sign in with Google',
-        //               style: TextStyle(fontWeight: FontWeight.w800),
-        //             )),
-        //         Padding(
-        //           padding: const EdgeInsets.all(8.0),
-        //           child: Text("or"),
-        //         ),
-        //         ElevatedButton(
-        //             style: ElevatedButton.styleFrom(maximumSize: Size(250, 80)),
-        //             onPressed: () async {
-        //               Navigator.push(context,
-        //                   MaterialPageRoute(builder: (context) => LoginScreen()));
-        //             },
-        //             child: Text(
-        //               'Login',
-        //               style: TextStyle(fontWeight: FontWeight.w800),
-        //             )),
-        //         SizedBox(height: 10),
-        //         Row(
-        //           mainAxisAlignment: MainAxisAlignment.center,
-        //           children: [
-        //             Text("Don't have an account?"),
-        //             TextButton(
-        //                 onPressed: () {
-        //                   Navigator.push(
-        //                       context,
-        //                       MaterialPageRoute(
-        //                           builder: (context) => SignUpScreen()));
-        //                 },
-        //                 child: Text('Sign up'))
-        //           ],
-        //         )
-        //       ],
-        //     ),
-        //   ),
-        // ),

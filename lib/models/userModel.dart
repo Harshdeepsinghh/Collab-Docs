@@ -7,12 +7,14 @@ class UserModel {
   final String profilePic;
   final String uid;
   final String token;
+  final String password;
   UserModel({
     required this.name,
     required this.email,
     required this.profilePic,
     required this.uid,
     required this.token,
+    required this.password,
   });
 
   Map<String, dynamic> toMap() {
@@ -22,6 +24,7 @@ class UserModel {
       'profilePic': profilePic,
       '_id': uid,
       'token': token,
+      'password': password
     };
   }
 
@@ -32,6 +35,7 @@ class UserModel {
       profilePic: map['profilePic'] as String,
       uid: map['_id'] as String,
       token: map['token'] ?? '',
+      password: map['password'] ?? '',
     );
   }
 
@@ -40,19 +44,20 @@ class UserModel {
   factory UserModel.fromJson(String source) =>
       UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  UserModel copyWith({
-    String? name,
-    String? email,
-    String? profilePic,
-    String? uid,
-    String? token,
-  }) {
+  UserModel copyWith(
+      {String? name,
+      String? email,
+      String? profilePic,
+      String? uid,
+      String? token,
+      String? password}) {
     return UserModel(
       name: name ?? this.name,
       email: email ?? this.email,
       profilePic: profilePic ?? this.profilePic,
       uid: uid ?? this.uid,
       token: token ?? this.token,
+      password: password ?? this.password,
     );
   }
 }
