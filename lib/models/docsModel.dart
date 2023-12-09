@@ -6,10 +6,12 @@ class DocumentModel {
   String title;
   String docId;
   List content;
+  String uid;
   DocumentModel({
     required this.title,
     required this.docId,
     required this.content,
+    required this.uid,
   });
 
   Map<String, dynamic> toMap() {
@@ -17,6 +19,7 @@ class DocumentModel {
       'title': title,
       '_id': docId,
       'content': content,
+      'uid': uid,
     };
   }
 
@@ -25,6 +28,7 @@ class DocumentModel {
       title: map['title'] ?? '',
       docId: map['_id'] ?? '',
       content: map['content'] ?? [],
+      uid: map['uid'] ?? '',
     );
   }
 
@@ -43,15 +47,13 @@ class DocumentModel {
   @override
   int get hashCode => title.hashCode;
 
-  DocumentModel copyWith({
-    String? title,
-    String? docId,
-    List? content,
-  }) {
+  DocumentModel copyWith(
+      {String? title, String? docId, List? content, String? uid}) {
     return DocumentModel(
       title: title ?? this.title,
       docId: docId ?? this.docId,
       content: content ?? this.content,
+      uid: uid ?? this.uid,
     );
   }
 

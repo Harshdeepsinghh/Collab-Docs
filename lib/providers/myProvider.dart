@@ -3,6 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 StateProvider<bool> themeProvider = StateProvider((ref) => false);
 final newProv = StateProvider((ref) => "hello");
+StateProvider<bool> showNavBar = StateProvider((ref) => true);
+StateProvider<bool> showSkeleton = StateProvider((ref) => false);
+StateProvider<bool> refreshApi = StateProvider((ref) => false);
+StateProvider<dynamic> membersData = StateProvider((ref) => null);
 
 class SharedTheme {
   saveTheme(bool theme) async {

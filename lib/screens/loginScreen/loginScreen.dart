@@ -3,7 +3,7 @@ import 'package:collabDocs/auth/saveAuthToken.dart';
 import 'package:collabDocs/constants/appColors.dart';
 import 'package:collabDocs/constants/appConsts.dart';
 import 'package:collabDocs/providers/myProvider.dart';
-import 'package:collabDocs/screens/homeScreen/homeScreen.dart';
+import 'package:collabDocs/screens/bottomNav/bottomNav.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -130,8 +130,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           AppApi().userLoginManually(body, context).then((value) {
             SharedPrefData().saveToken(value["token"]);
             SharedPrefData().saveUid(value["data"]["_id"]);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => HomeScreen(value["data"]["_id"])));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => BottomNavScreen()));
           });
         }
       },
@@ -195,8 +195,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
           ),
         ),
+    
         SizedBox(height: 20),
       ],
     );
   }
+
 }

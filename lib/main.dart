@@ -1,12 +1,13 @@
 import 'package:collabDocs/constants/appColors.dart';
 import 'package:collabDocs/providers/myProvider.dart';
+import 'package:collabDocs/screens/bottomNav/bottomNav.dart';
+import 'package:collabDocs/screens/loginScreen/loginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:collabDocs/auth/saveAuthToken.dart';
-import 'package:collabDocs/screens/homeScreen/homeScreen.dart';
-import 'package:collabDocs/screens/loginScreen/loginScreen.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       setState(() {
         isLoggedIn = false;
       });
-    }
+    } else {}
   }
 
   checkTheme() async {
@@ -61,30 +62,38 @@ class _MyAppState extends ConsumerState<MyApp> {
         final themeBool = ref.watch(themeProvider);
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
+          title: 'Collab Docs',
           themeMode: themeBool ? ThemeMode.dark : ThemeMode.light,
           theme: ThemeData(
             dialogBackgroundColor: kPrimaryWhiteColor(),
-            scaffoldBackgroundColor: kWhiteColor(),
+            scaffoldBackgroundColor: kPrimaryWhiteColor(),
             fontFamily: "Lufga",
             colorScheme: ColorScheme.light(
-              background: kPrimaryColor(),
+              // background: kPrimaryColor(),
               primary: kPrimaryColor(),
             ),
             useMaterial3: true,
           ),
           darkTheme: ThemeData(
             fontFamily: "Lufga",
-            primaryColor: kBlackColor(),
+            dialogBackgroundColor: kBlackColor(),
+            primaryColor: kPrimaryColor(),
             colorScheme: ColorScheme.dark(
-              background: kBlackColor(),
+              // background: kBlackColor(),
               primary: kPrimaryColor(),
             ),
             useMaterial3: true,
           ),
-          home: isLoggedIn ? HomeScreen(uid) : LoginScreen(),
+          home: isLoggedIn ? BottomNavScreen() : LoginScreen(),
         );
       },
     );
   }
 }
+
+final routes = GoRouter(routes: [
+  GoRoute(
+    path: "/",
+    builder: (context, state) => BottomNavScreen(),
+  )
+]);
