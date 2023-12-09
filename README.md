@@ -11,6 +11,9 @@ Effortless Creation: Enjoy a streamlined document creation process with an intui
 Seamless Sharing: Easily share your documents, fostering collaboration among teams, friends, and clients.
 
 Secure Cloud Storage: Ensure the safety of your documents with our secure cloud storage solution.
+
+[![Download Collab Docs on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.harshdeep.collabDocs&pcampaignid=web_share)
+
 ## Screenshots
 
 <div style="overflow-x: scroll; white-space: nowrap;">
