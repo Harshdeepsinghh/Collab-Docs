@@ -15,16 +15,16 @@ Secure Cloud Storage: Ensure the safety of your documents with our secure cloud 
 
 ![Splash](path/to/screenshots/splash.png)
 
-### Home Screen
+## Home Screen
 ![Home Screen](path/to/screenshots/home_screen.png)
 
-### Editing Feature
+## Editing Feature
 ![Editing Feature](path/to/screenshots/edit_documents.png)
 
-### Share Documents
+## Share Documents
 ![Share Documents](path/to/screenshots/share_docs.png)
 
-### Profile Screen
+## Profile Screen
 ![Profile](path/to/screenshots/profile_page.png)
 
 
