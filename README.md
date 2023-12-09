@@ -22,3 +22,5 @@ Secure Cloud Storage: Ensure the safety of your documents with our secure cloud 
 </div>
 
 
+## Dark Theme
+Collab Docs not only offers powerful collaboration tools but also understands the importance of a personalized user experience. With our Dark Theme feature, you can now choose a sleek and stylish dark color scheme, perfect for reducing eye strain during late-night work sessions or simply adding a touch of sophistication to your workspace.
