@@ -13,18 +13,12 @@ Seamless Sharing: Easily share your documents, fostering collaboration among tea
 Secure Cloud Storage: Ensure the safety of your documents with our secure cloud storage solution.
 ## Screenshots
 
-![Splash](path/to/screenshots/splash.png)
-
-## Home Screen
-![Home Screen](path/to/screenshots/home_screen.png)
-
-## Editing Feature
-![Editing Feature](path/to/screenshots/edit_documents.png)
-
-## Share Documents
-![Share Documents](path/to/screenshots/share_docs.png)
-
-## Profile Screen
-![Profile](path/to/screenshots/profile_page.png)
+<div style="overflow-x: scroll; white-space: nowrap;">
+  <img src="path/to/screenshots/splash.png" alt="Splash" style="display:inline-block; margin: 0 10px;" />
+  <img src="path/to/screenshots/home_screen.png" alt="Home Screen" style="display:inline-block; margin: 0 10px;" />
+  <img src="path/to/screenshots/edit_documents.png" alt="Editing Feature" style="display:inline-block; margin: 0 10px;" />
+  <img src="path/to/screenshots/share_docs.png" alt="Share Documents" style="display:inline-block; margin: 0 10px;" />
+  <img src="path/to/screenshots/profile_page.png" alt="Profile Screen" style="display:inline-block; margin: 0 10px;" />
+</div>
 
 
