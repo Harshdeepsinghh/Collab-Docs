@@ -9,7 +9,6 @@
 .history
 .svn/
 migrate_working_dir/
-.lib/api
 # IntelliJ related
 *.iml
 *.ipr
@@ -31,6 +30,7 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+/lib/api
 
 # Symbolication related
 app.*.symbols
