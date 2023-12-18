@@ -148,8 +148,7 @@ class _MainDocumentScreenState extends ConsumerState<MainDocumentScreen>
                                     iconColor: kRedColor(),
                                     label: 'Delete',
                                     onTap: () {
-                                      kDelDocument(context, snapshot.data).then(
-                                          (value) => Navigator.pop(context));
+                                      kDelDocument(context, snapshot.data);
                                     },
                                     icon: kDeleteIcon()),
                                 kPopupItems(
@@ -205,12 +204,14 @@ class _MainDocumentScreenState extends ConsumerState<MainDocumentScreen>
       context: context,
       builder: (context) {
         return AlertDialog(
-          surfaceTintColor: kWhiteColor(),
-          backgroundColor: kWhiteColor(),
+          surfaceTintColor:
+              ref.read(themeProvider) ? kBlackColor() : kWhiteColor(),
+          backgroundColor:
+              ref.read(themeProvider) ? kBlackColor() : kWhiteColor(),
           title: Text("Share Document"),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
           content: Container(
-            color: kWhiteColor(),
+            color: ref.read(themeProvider) ? kBlackColor() : kWhiteColor(),
             child: kTextField(
               controller: _shareEmailController,
               validator: (val) {
@@ -295,6 +296,7 @@ class _MainDocumentScreenState extends ConsumerState<MainDocumentScreen>
                     setState(() {});
                     AppApi().deleteDocsArray(context,
                         docIds: [data["_id"]]).then((value) {
+                      Navigator.pop(context);
                       Navigator.pop(context);
                       ref.read(showSkeleton.notifier).update((state) => false);
                       onGoBack(value);

@@ -127,7 +127,11 @@ class _SettingPannelState extends ConsumerState<SettingsScreen> {
                                                                         BorderRadius.circular(
                                                                             0)),
                                                                 title: Text(
-                                                                    "Edit Profile Pic"),
+                                                                  "Edit Profile Pic",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                                ),
                                                                 content: Row(
                                                                   mainAxisAlignment:
                                                                       MainAxisAlignment
@@ -157,10 +161,13 @@ class _SettingPannelState extends ConsumerState<SettingsScreen> {
                                                                               ? kBlackColor()
                                                                               : kWhiteColor(),
                                                                           size:
-                                                                              80,
+                                                                              60,
                                                                         ),
                                                                       ),
                                                                     ),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            15),
                                                                     GestureDetector(
                                                                       onTap:
                                                                           () async {
@@ -185,7 +192,7 @@ class _SettingPannelState extends ConsumerState<SettingsScreen> {
                                                                               ? kBlackColor()
                                                                               : kWhiteColor(),
                                                                           size:
-                                                                              80,
+                                                                              60,
                                                                         ),
                                                                       ),
                                                                     ),

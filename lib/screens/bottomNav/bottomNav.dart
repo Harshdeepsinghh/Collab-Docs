@@ -12,7 +12,6 @@ import 'package:collabDocs/update/autoUpdate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:logger/logger.dart';
 
 class BottomNavScreen extends ConsumerStatefulWidget {
   const BottomNavScreen({super.key});
@@ -145,6 +144,7 @@ class _BottomNavScreenState extends ConsumerState<BottomNavScreen> {
                           Text(
                             labelAndIcon[index]["label"],
                             style: TextStyle(
+                              fontSize: 12,
                               color: isActive
                                   ? kPrimaryColor()
                                   : ref.read(themeProvider)
